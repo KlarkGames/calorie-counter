@@ -1,26 +1,37 @@
-/*
-Формулы
-Поддержание веса
-Для женщин:
+const ACTIVITY_COEFFICIENTS = {
+    min: 1.2,
+    low: 1.375,
+    medium: 1.55,
+    high: 1.725,
+    max: 1.9,
+};
 
-N = (10 × вес в килограммах) + (6,25 × рост в сантиметрах) − (5 × возраст в годах) − 161
-Для мужчин:
+const ADD_WEIGHT = 0.15;
+const LOSE_WEIGHT = -0.15;
 
-N = (10 × вес в килограммах) + (6,25 × рост в сантиметрах) − (5 × возраст в годах) + 5
-Полученное значение (N) умножаем на коэффициент активности. Результат и будет нормой калорий для поддержания веса.
-*/
+const form = document.querySelector('.counter__form');
 
-/*
-Коэффициенты активности
-Минимальная: 1.2.
-Низкая: 1.375.
-Средняя: 1.55.
-Высокая: 1.725.
-Очень высокая: 1.9.
-*/
+const CalculationNorm = function () {
+    const gender = form.querySelector('input[name="gender"]:checked').value;
+    const age = form.querySelector('input[name="age"]').value;
+    const height = form.querySelector('input[name="height"]').value;
+    const weight = form.querySelector('input[name="weight"]').value;
+    const activity = form.querySelector('input[name="activity"]:checked').value;
+    
+    let n;
+    if (gender === 'male') {
+        n = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) + 5;
+    } else {
+        n = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) - 161;
+    }
+    return ACTIVITY_COEFFICIENTS[activity] * n;
+};
 
-/*
-Формулы для набора и сброса веса
-Набор веса: прибавляем 15% от нормы к этой норме.
-Сброс веса: вычитаем 15% от нормы из этой нормы.
-*/
+const Calculation = function () {
+    const keep = CalculationNorm();
+    document.querySelector('#calories-norm').textContent = Math.round(keep);
+    document.querySelector('#calories-minimal').textContent = Math.round(keep * (1 + LOSE_WEIGHT));
+    document.querySelector('#calories-maximal').textContent = Math.round(keep * (1 + ADD_WEIGHT));
+};
+
+export {Calculation};

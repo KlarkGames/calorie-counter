@@ -1,30 +1,16 @@
-import './calculation.js'
-/*
-Состояние по умолчанию
-Выбран мужской пол.
-В полях ввода стоит 0.
-Выбрана «минимальная» физическая активность.
-Кнопка «Рассчитать» неактивна.
-Кнопка сброса данных из полей ввода неактивна.
-Блок с выводом информации о калориях скрыт.
-*/
+import { Calculation } from './calculation.js'
+
 const form = document.querySelector('.counter__form');
 const submitButton = document.querySelector('.form__submit-button');
 const resetButton = document.querySelector('.form__reset-button');
-/*
-Кнопка «Рассчитать»
-Становится активна только когда заполнены все поля ввода.
-По клику на кнопку появляется блок с информацией о калориях, если до этого он не был показан. Если блок уже находится на странице, клик по кнопке обновляет расчёты, выводится актуальная информация.
-*/
+const informBlock = document.querySelector('.counter__result');
+
 submitButton.onclick = (evt) => {
     evt.preventDefault();
+    Calculation();
+    informBlock.classList.remove('counter__result--hidden');
 };
 
-/*
-Кнопка «Очистить поля и расчёт»
-Становится активна, когда хотя бы одно числовое поле заполнено.
-При клике все элементы приложения сбрасываются до состояния по умолчанию: числовые поля очищаются (плейсхолдер 0), пол становится мужской, физическая активность «минимальная», блок с информацией о калориях скрывается.
-*/
 const textData = form.querySelectorAll('input[type=text]');
 
 form.onchange = () => {
@@ -37,4 +23,5 @@ form.onchange = () => {
 form.onreset = () => {
     resetButton.disabled = true;
     submitButton.disabled = true;
+    informBlock.classList.add('counter__result--hidden');
 };
