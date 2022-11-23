@@ -16,8 +16,11 @@ const textData = form.querySelectorAll('input[type=text]');
 form.onchange = () => {
     resetButton.disabled = false;
     let i = 0;
-    while (i < textData.length && textData[i].value != '') i++;
+    while (i < textData.length && textData[i].value != '' && Number(textData[i].value) > 0) {
+        i++;
+    }
     if (i === textData.length) submitButton.disabled = false;
+    else submitButton.disabled = true;
 };
 
 form.onreset = () => {
